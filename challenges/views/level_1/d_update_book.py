@@ -1,7 +1,7 @@
 """
 В этом задании вам нужно реализовать функцию update_book, которая обновляет в БД данные книги с указанным id.
 Функция должна сохранять в БД новые значения и возвращать экземпляр книги с уже обновлёнными данными.
-Не забудьте обработать случай несуществующего id, тогда функция должна возврать None.
+Не забудьте обработать случай несуществующего id, тогда функция должна возвращать None.
 
 Чтобы проверить, работает ли ваш код, запустите runserver и сделайте POST-запрос
 на 127.0.0.1:8000/book/<id книги>/update/.
@@ -13,8 +13,19 @@ from challenges.models import Book
 
 
 def update_book(book_id: int, new_title: str, new_author_full_name: str, new_isbn: str) -> Book | None:
-    # код писать тут
-    pass
+    """Обновляет поля книги по введённым значениям и id или отдаёт ответ Bad Request."""
+    updated = Book.objects.filter(id=book_id).update(
+        title=new_title,
+        author_full_name=new_author_full_name,
+        isbn=new_isbn
+    )
+
+    if updated == 0:
+        return None
+
+    return Book.objects.get(id=book_id)
+
+    # [17/Mar/2026 11:11:45] "POST /book/2/update/ HTTP/1.1" 200 91
 
 
 def update_book_handler(request: HttpRequest, book_id: int) -> HttpResponse:

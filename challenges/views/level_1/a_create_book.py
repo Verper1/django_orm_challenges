@@ -12,9 +12,14 @@ from django.http import HttpRequest, HttpResponse, HttpResponseBadRequest, JsonR
 from challenges.models import Book
 
 
-def create_book(title: str, author_full_name: str, isbn: str) -> Book:
-    # код писать тут
-    pass
+def create_book(title_test: str, author_full_name_test: str, isbn_test: str) -> Book:
+    """Создаёт запись в БД с введёнными полями."""
+    return Book.objects.create(title=title_test,
+                               author_full_name=author_full_name_test,
+                               isbn=isbn_test)
+    # [17/Mar/2026 10:36:16] "POST /book/create/ HTTP/1.1" 200 98
+    # Надо было в тело запроса кидать то параметры, а не в адресную строку...
+
 
 
 def create_book_handler(request: HttpRequest) -> HttpResponse:
