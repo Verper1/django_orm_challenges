@@ -15,8 +15,21 @@ from challenges.models import Book
 
 
 def get_book(book_id: int) -> Book | None:
-    # код писать тут
-    pass
+    """Получает запись книги со всеми полями по id или отдаёт ответ Not Found."""
+    try:
+        return Book.objects.get(id=book_id)
+    except Book.DoesNotExist:
+        return None
+    # Not Found: /book/3/
+    # [17/Mar/2026 10:47:54] "GET /book/3/ HTTP/1.1" 404 0
+
+    # [17/Mar/2026 10:48:16] "GET /book/1/ HTTP/1.1" 200 98
+    # {
+    #     "id": 1,
+    #     "title": "title_test",
+    #     "author_full_name": "author_full_name_test",
+    #     "isbn": "isbn_test"
+    # }
 
 
 def book_details_handler(request: HttpRequest, book_id: int) -> HttpResponse:
